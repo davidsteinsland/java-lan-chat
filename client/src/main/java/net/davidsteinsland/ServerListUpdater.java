@@ -11,44 +11,44 @@ import java.net.InetAddress;
 
 public class ServerListUpdater extends SwingWorker<Set<InetAddress>, Void> {
 
-	private int port;
+  private int port;
 
-	private JButton refreshButton;
+  private JButton refreshButton;
 
-	private JList<String> serverList;
+  private JList<String> serverList;
 
-	private ServerListModel model;
+  private ServerListModel model;
 
-	public ServerListUpdater(int port, JButton refreshButton, JList<String> serverList, ServerListModel model) {
-		this.port = port;
-		this.refreshButton = refreshButton;
-		this.serverList = serverList;
-		this.model = model;
-	}
+  public ServerListUpdater(int port, JButton refreshButton, JList<String> serverList, ServerListModel model) {
+    this.port = port;
+    this.refreshButton = refreshButton;
+    this.serverList = serverList;
+    this.model = model;
+  }
 
-	@Override
-	public Set<InetAddress> doInBackground() {
-		refreshButton.setEnabled(false);
-		String text = refreshButton.getText();
-		refreshButton.setText("Searching ...");
+  @Override
+  public Set<InetAddress> doInBackground() {
+    refreshButton.setEnabled(false);
+    String text = refreshButton.getText();
+    refreshButton.setText("Searching ...");
 
-		Set<InetAddress> servers = null;
+    Set<InetAddress> servers = null;
 
-		try (Discoverer d = new Discoverer(port)) {
-			d.discover(serverList, model);
+    try (Discoverer d = new Discoverer(port)) {
+      d.discover(serverList, model);
 
-			Thread.sleep(2000);
+      Thread.sleep(2000);
 
-			servers = d.stopDiscover();
-		} catch (SocketException e) {
-			System.err.println("Socket error: " + e.getMessage());
-		} catch (InterruptedException e) {
-			System.err.println("Error: " + e.getMessage());
-		}
+      servers = d.stopDiscover();
+    } catch (SocketException e) {
+      System.err.println("Socket error: " + e.getMessage());
+    } catch (InterruptedException e) {
+      System.err.println("Error: " + e.getMessage());
+    }
 
-		refreshButton.setEnabled(true);
-		refreshButton.setText(text);
+    refreshButton.setEnabled(true);
+    refreshButton.setText(text);
 
-		return servers;
-	}
+    return servers;
+  }
 }

@@ -10,48 +10,43 @@ import javax.xml.bind.DatatypeConverter;
 
 public class NetworkInterfaceModel extends DefaultComboBoxModel<String> {
 
-	private List<NetworkInterface> interfaces = null;
+  private List<NetworkInterface> interfaces = null;
 
-	public NetworkInterfaceModel() {
-		super();
-		try {
-			interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-		} catch (SocketException e) {
-			interfaces = new ArrayList<>();
-		}
-	}
+  public NetworkInterfaceModel() {
+    super();
+    try {
+      interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+    } catch (SocketException e) {
+      interfaces = new ArrayList<>();
+    }
+  }
 
-	@Override
-	public int getSize() {
-		return interfaces.size();
-	}
-	@Override
+  @Override
+  public int getSize() {
+    return interfaces.size();
+  }
 
-	public String getElementAt(int i) {
-		NetworkInterface netint = interfaces.get(i);
+  @Override
+  public String getElementAt(int i) {
+    NetworkInterface netint = interfaces.get(i);
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(netint.getDisplayName());
+    StringBuilder sb = new StringBuilder();
+    sb.append(netint.getDisplayName());
 
-		try {
-			byte[] macAddr = netint.getHardwareAddress();
+    try {
+      byte[] macAddr = netint.getHardwareAddress();
 
-	        if (macAddr != null) {
-	        	sb.append(" - ");
-	        	sb.append(DatatypeConverter.printHexBinary(macAddr));
-	        	// for (byte b : macAddr) {
-		        // 	System.out.printf("%02x", b);
-		        // }
-		        // System.out.println();
-		    }
-    	} catch (SocketException e) {
-    		System.err.println(e.getMessage());
-    	}
+      if (macAddr != null) {
+          sb.append(" - ");
+          sb.append(DatatypeConverter.printHexBinary(macAddr));
+      }
+    } catch (SocketException e) {
+      System.err.println(e.getMessage());
+    }
 
-	    return sb.toString();
-	}
+    return sb.toString();
+  }
 
-	public void refreshList() {
-
-	}
+  public void refreshList() {
+  }
 }
