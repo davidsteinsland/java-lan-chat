@@ -38,9 +38,6 @@ public class Discoverer implements AutoCloseable {
 	private void initializeSocket() throws SocketException {
 		socket = new DatagramSocket(null);
 		socket.setBroadcast(true);
-
-		System.out.println(socket.isBound());
-		System.out.println(socket.isConnected());
 	}
 
 	public void close() throws InterruptedException {
