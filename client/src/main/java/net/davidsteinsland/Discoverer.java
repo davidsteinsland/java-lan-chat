@@ -47,7 +47,6 @@ public class Discoverer implements AutoCloseable {
 		if (socket != null) {
 			/* cause the Receiver to stop, because it is most likely
 				being blocked in a socket.receive() call */
-			System.out.println("Closing");
 			socket.close();
 
 			if (receiverThread != null) {
@@ -105,11 +104,9 @@ public class Discoverer implements AutoCloseable {
 		senderThread = new Thread(sender);
 		receiverThread = new Thread(receiver);
 
-		System.out.println("Sending packets");
 		senderThread.start();
 		senderThread.join();
 
-		System.out.println("Receiving packets");
 		receiverThread.start();
 	}
 
@@ -138,10 +135,6 @@ public class Discoverer implements AutoCloseable {
 				try {
 					DatagramPacket packet = new DatagramPacket(msg, msg.length, addr, port);
 					socket.send(packet);
-
-					System.out.println(socket.isBound());
-					System.out.println(socket.getLocalPort());
-					System.out.println(socket.isConnected());
 				} catch (IOException e) {
 					System.err.println("Sender: " + e.getMessage());
 				}
@@ -182,6 +175,7 @@ public class Discoverer implements AutoCloseable {
 		@Override
 		public Set<InetAddress> doInBackground() {
 			serverListModel.clear();
+			serverList.updateUI();
 
 			while (!socket.isClosed() && !isCancelled()) {
 				byte recvbuf[] = new byte[64];

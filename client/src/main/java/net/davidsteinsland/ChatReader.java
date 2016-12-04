@@ -35,7 +35,6 @@ public class ChatReader extends SwingWorker<Void, String> {
 
         String line;
         while ((line = in.readLine()) != null) {
-        	System.out.println("Received a line");
             publish(line);
         }
         /* if line = null, server disconnected on us */
