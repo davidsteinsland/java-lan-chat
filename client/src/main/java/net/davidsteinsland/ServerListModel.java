@@ -4,9 +4,11 @@ import javax.swing.AbstractListModel;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.io.IOException;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class ServerListModel extends AbstractListModel<String> {
 
@@ -37,21 +39,24 @@ public class ServerListModel extends AbstractListModel<String> {
 	public String getElementAt(int i) {
 		InetAddress addr = servers.get(i);
 
-		String serverName = null;
+		String serverName = "[N/A]";
 
 		try {
-			NetworkInterface netint = NetworkInterface.getByInetAddress(addr);
-			if (netint != null) {
-				serverName = netint.getDisplayName();
-			} else {
-				serverName = "[N/A]";
-			}
+			Enumeration<NetworkInterface> netints = NetworkInterface.getNetworkInterfaces();
+			while (netints.hasMoreElements()) {
+				NetworkInterface netint = netints.nextElement();
 
-			serverName = serverName + " - " + addr.toString();
+				if (addr.isReachable(netint, 0, 500)) {
+					serverName = netint.getDisplayName();
+					break;
+				}
+			}
 		} catch (SocketException e) {
 			System.err.println("Socket exception: " + e.getMessage());
+		} catch (IOException e) {
+			System.err.println("IO exception: " + e.getMessage());
 		}
 
-		return serverName;
+		return serverName + " - " + addr.toString();
 	}
 }
