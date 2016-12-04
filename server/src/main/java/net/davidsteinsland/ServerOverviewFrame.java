@@ -139,7 +139,7 @@ public class ServerOverviewFrame extends JFrame {
 		contentPanel = new JPanel();
 		label1 = new JLabel();
 		scrollPane1 = new JScrollPane();
-		connectedClientsList = new JList();
+		connectedClientsList = new JList<>();
 		scrollPane3 = new JScrollPane();
 		messagesArea = new JTextArea();
 		closeSocketButton = new JButton();
@@ -180,6 +180,8 @@ public class ServerOverviewFrame extends JFrame {
 
 				//======== scrollPane1 ========
 				{
+
+					//---- connectedClientsList ----
 					connectedClientsList.addListSelectionListener(e -> connectedClientsListValueChanged(e));
 					scrollPane1.setViewportView(connectedClientsList);
 				}
@@ -242,7 +244,7 @@ public class ServerOverviewFrame extends JFrame {
 	private JPanel contentPanel;
 	private JLabel label1;
 	private JScrollPane scrollPane1;
-	private JList connectedClientsList;
+	private JList<String> connectedClientsList;
 	private JScrollPane scrollPane3;
 	private JTextArea messagesArea;
 	private JButton closeSocketButton;

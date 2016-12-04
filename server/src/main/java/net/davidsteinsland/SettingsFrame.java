@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-
 /*
- * Created by JFormDesigner on Thu Dec 01 15:13:42 CET 2016
+ * Created by JFormDesigner on Sun Dec 04 15:21:05 CET 2016
  */
 
 
@@ -21,7 +20,7 @@ public class SettingsFrame extends JFrame {
 
 	private void okButtonActionPerformed(ActionEvent evt) {
 		try {
-			ApplicationSettings.setPortNumber(Integer.parseInt(multicastPortField.getText()));
+			ApplicationSettings.setPortNumber(Integer.parseInt(portField.getText()));
 			ApplicationSettings.persist();
 			this.dispose();
 		} catch (NumberFormatException e) {
@@ -38,8 +37,8 @@ public class SettingsFrame extends JFrame {
 		// Generated using JFormDesigner Evaluation license - David Steinsland
 		dialogPane = new JPanel();
 		contentPanel = new JPanel();
-		label3 = new JLabel();
-		multicastPortField = new JTextField();
+		label1 = new JLabel();
+		portField = new JTextField();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -67,13 +66,10 @@ public class SettingsFrame extends JFrame {
 			{
 				contentPanel.setLayout(new GridLayout(2, 2));
 
-				//---- label3 ----
-				label3.setText("Multicast port");
-				contentPanel.add(label3);
-
-				//---- multicastPortField ----
-				multicastPortField.setText(String.valueOf(ApplicationSettings.SERVER_PORT));
-				contentPanel.add(multicastPortField);
+				//---- label1 ----
+				label1.setText("Server UDP port:");
+				contentPanel.add(label1);
+				contentPanel.add(portField);
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -106,14 +102,16 @@ public class SettingsFrame extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
+
+		portField.setText(String.valueOf(ApplicationSettings.SERVER_PORT));
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	// Generated using JFormDesigner Evaluation license - David Steinsland
 	private JPanel dialogPane;
 	private JPanel contentPanel;
-	private JLabel label3;
-	private JTextField multicastPortField;
+	private JLabel label1;
+	private JTextField portField;
 	private JPanel buttonBar;
 	private JButton okButton;
 	private JButton cancelButton;
