@@ -3,6 +3,12 @@ package net.davidsteinsland;
 import org.apache.commons.configuration.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 public class ApplicationSettings {
   private static Configuration config;
@@ -13,6 +19,12 @@ public class ApplicationSettings {
 
   static {
     try {
+      File configFile = getConfigurationFile();
+
+      if (!configFile.exists()) {
+        createDefaultConfigFile(configFile);
+      }
+
       config = new PropertiesConfiguration("server.properties");
 
       SERVER_PORT = config.getInt("server.port");
@@ -22,6 +34,23 @@ public class ApplicationSettings {
     } catch (UnknownHostException e) {
       System.err.println(e.getMessage());
     }
+  }
+
+  private static void createDefaultConfigFile(File configFile) {
+    /* load properties from JAR */
+    ClassLoader loader = ApplicationSettings.class.getClassLoader();
+    URL res = loader.getResource("server.properties");
+    try (InputStream in = res.openStream()) {
+      /* copy stream to file */
+      Files.copy(in, configFile.toPath());
+    } catch (IOException e) {
+      System.err.println("IO error: " + e.getMessage());
+    }
+  }
+
+  public static File getConfigurationFile() {
+    /* check the current path */
+    return new File(System.getProperty("user.dir"), "server.properties");
   }
 
   public static void setPortNumber(int port) {
