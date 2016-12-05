@@ -27,6 +27,9 @@ public class ChatFrame extends JFrame {
     this.socket = new Socket(server, port);
 
     initComponents();
+
+    chatReader = new ChatReader(messagesArea, socket);
+    chatReader.execute();
   }
 
   private void messageTextMouseClicked(MouseEvent e) {
@@ -62,6 +65,8 @@ public class ChatFrame extends JFrame {
       UIMessage.showErrorMessage(e.getMessage());
     }
 
+    chatReader.cancel(false);
+
     FrameManager.invokeFrame(new MainFrame());
   }
 
@@ -77,7 +82,7 @@ public class ChatFrame extends JFrame {
     dialogPane = new JPanel();
     contentPanel = new JPanel();
     scrollPane1 = new JScrollPane();
-    messagesPane = new JTextPane();
+    messagesArea = new JTextArea();
     scrollPane3 = new JScrollPane();
     list1 = new JList<>();
     buttonBar = new JPanel();
@@ -112,7 +117,7 @@ public class ChatFrame extends JFrame {
         //======== scrollPane1 ========
         {
           scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-          scrollPane1.setViewportView(messagesPane);
+          scrollPane1.setViewportView(messagesArea);
         }
         contentPanel.add(scrollPane1, BorderLayout.CENTER);
 
@@ -189,9 +194,6 @@ public class ChatFrame extends JFrame {
     pack();
     setLocationRelativeTo(getOwner());
     // JFormDesigner - End of component initialization  //GEN-END:initComponents
-
-    ChatReader w = new ChatReader(messagesPane, socket);
-    w.execute();
   }
 
   // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
@@ -199,7 +201,7 @@ public class ChatFrame extends JFrame {
   private JPanel dialogPane;
   private JPanel contentPanel;
   private JScrollPane scrollPane1;
-  private JTextPane messagesPane;
+  private JTextArea messagesArea;
   private JScrollPane scrollPane3;
   private JList<String> list1;
   private JPanel buttonBar;
@@ -212,4 +214,6 @@ public class ChatFrame extends JFrame {
   private InetAddress server;
 
   private Socket socket;
+
+  private ChatReader chatReader;
 }

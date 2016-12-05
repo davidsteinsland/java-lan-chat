@@ -1,7 +1,7 @@
 package net.davidsteinsland;
 
 import javax.swing.SwingWorker;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 
 import java.net.Socket;
 import java.io.IOException;
@@ -14,17 +14,17 @@ import java.util.List;
 public class ChatReader extends SwingWorker<Void, String> {
   private Socket socket;
 
-  private JTextPane messagesPane;
+  private JTextArea messagesArea;
 
-  public ChatReader(JTextPane messagesPane, Socket socket) {
+  public ChatReader(JTextArea messagesArea, Socket socket) {
     this.socket = socket;
-    this.messagesPane = messagesPane;
+    this.messagesArea = messagesArea;
   }
 
   @Override
   protected void process(List<String> lines) {
     for (String line : lines) {
-      messagesPane.setText(messagesPane.getText() + line + "\n");
+      messagesArea.setText(messagesArea.getText() + line + "\n");
     }
   }
 
